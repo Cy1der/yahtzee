@@ -3,7 +3,7 @@ import { URL } from "url";
 import { parse } from "query-string";
 
 type Data = {
-  result: string | (number | void)[];
+  result: string | number;
 };
 
 export default function handler(
@@ -13,37 +13,35 @@ export default function handler(
   const url = new URL(req.url ?? "/", `http://${req.headers.host}`);
   const parsed = parse(url.search);
 
-  if (!parsed.held)
+  if (!parsed.dice)
     return res.status(400).json({
-      result: "Error: missing/empty held parameter",
+      result: "Error: missing/empty dice parameter",
     });
 
   let checkForLetters: RegExp = /[a-zA-Z]/g;
-  let rawHeld: string = parsed.held.toString();
+  let rawDice: string = parsed.dice.toString();
   let status = 200;
   let message = "";
 
-  if (checkForLetters.test(rawHeld)) {
+  if (checkForLetters.test(rawDice)) {
     status = 406;
-    message = "Error: invalid held parameter";
+    message = "Error: invalid dice parameter";
   }
 
-  let held = rawHeld.split("").map((num) => {
+  let dice = rawDice.split("").map((num) => {
     let diceNum = parseInt(num, 10);
-    if (isNaN(diceNum) || diceNum > 6 || (diceNum < 1 && diceNum !== 0)) {
+    if (isNaN(diceNum) || diceNum > 6 || diceNum < 1) {
       status = 406;
-      message =
-        "Error: held dice number must be between 1 and 6, or 00000 for no dice held";
+      message = "Error: dice number must be between 1 and 6";
     }
     return diceNum;
   });
 
   if (status === 200) {
-    let result = held;
+    let result = 0;
 
-    held.forEach((dice, index) => {
-      let diceRoll = Math.floor(Math.random() * 6) + 1;
-      if (dice === 0) result.splice(index, 1, diceRoll);
+    dice.forEach((die) => {
+      if (die === 6) result += 6;
     });
 
     return res.status(status).json({ result });
