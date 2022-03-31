@@ -38,7 +38,7 @@ export default function handler(
     return diceNum;
   });
 
-  if (status === 200) {
+  if (validate.status === 200) {
     let filteredDice = mostFrequent(dice);
     let result: number = 0;
     let highest1: number = 0;
@@ -58,8 +58,8 @@ export default function handler(
 
     if (highest1 === 3 && highest2 === 2) result = 25;
 
-    return res.status(status).json({ result });
+    return res.status(validate.status).json({ result });
   }
 
-  return res.status(status).json({ result: message });
+  return res.status(validate.status).json({ result: validate.message });
 }

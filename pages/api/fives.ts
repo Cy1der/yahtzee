@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { URL } from "url";
 import { parse } from "query-string";
+import validateDice from "../../functions/validateDice";
 
 type Data = {
   result: string | number;
@@ -18,34 +19,19 @@ export default function handler(
       result: "Error: missing/empty dice parameter",
     });
 
-  let checkForLetters: RegExp = /[a-zA-Z]/g;
   let rawDice: string = parsed.dice.toString();
-  let status = 200;
-  let message = "";
 
-  if (checkForLetters.test(rawDice)) {
-    status = 406;
-    message = "Error: invalid dice parameter";
-  }
+  let validate = validateDice(rawDice);
 
-  let dice = rawDice.split("").map((num) => {
-    let diceNum = parseInt(num, 10);
-    if (isNaN(diceNum) || diceNum > 6 || diceNum < 1) {
-      status = 406;
-      message = "Error: dice number must be between 1 and 6";
-    }
-    return diceNum;
-  });
-
-  if (status === 200) {
+  if (validate.status === 200) {
     let result = 0;
 
-    dice.forEach((die) => {
+    validate.dice.forEach((die) => {
       if (die === 5) result += 5;
     });
 
-    return res.status(status).json({ result });
+    return res.status(validate.status).json({ result });
   }
 
-  return res.status(status).json({ result: message });
+  return res.status(validate.status).json({ result: validate.message });
 }
