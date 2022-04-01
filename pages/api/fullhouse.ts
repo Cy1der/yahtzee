@@ -45,15 +45,14 @@ export default function handler(
     let highest2: number = 0;
 
     Object.keys(filteredDice).forEach((key) => {
-        let count = filteredDice[key];
-        
-        if (count > highest1) {
-            highest2 = highest1;
-            highest1 = count;
-        }
-        else if (count > highest2) {
-            highest2 = count;
-        }
+      let count = filteredDice[key];
+
+      if (count > highest1) {
+        highest2 = highest1;
+        highest1 = count;
+      } else if (count > highest2) {
+        highest2 = count;
+      }
     });
 
     if (highest1 === 3 && highest2 === 2) result = 25;

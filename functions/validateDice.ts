@@ -1,4 +1,6 @@
-export default function validateDice(dice: string): { status: number; message: string; dice: number[] } {
+export default function validateDice(
+  dice: string
+): { status: number; message: string; dice: number[] } {
   let checkForLetters: RegExp = /[a-zA-Z]/g;
   let status = 200;
   let message = "";
@@ -21,5 +23,5 @@ export default function validateDice(dice: string): { status: number; message: s
     status,
     message,
     dice: parsedDice,
-  }
+  };
 }

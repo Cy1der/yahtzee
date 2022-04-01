@@ -44,16 +44,16 @@ export default function handler(
     let highest: number = 0;
 
     Object.keys(filteredDice).forEach((key) => {
-        let count = filteredDice[key];
-        if (count > highest) {
-            highest = count;
-        }
+      let count = filteredDice[key];
+      if (count > highest) {
+        highest = count;
+      }
     });
 
     if (highest >= 3) {
-        dice.forEach((die) => {
-            result += die;
-        });
+      dice.forEach((die) => {
+        result += die;
+      });
     }
 
     return res.status(status).json({ result });
