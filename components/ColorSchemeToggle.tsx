@@ -12,7 +12,7 @@ export default function ColorSchemeToggle() {
       color={dark ? "yellow" : "blue"}
       title="Toggle color scheme"
     >
-      {dark ? <Sun size={24} /> : <MoonStars size={24} />}
+      {dark ? <Sun size={30} /> : <MoonStars size={30} />}
     </ActionIcon>
   );
 }

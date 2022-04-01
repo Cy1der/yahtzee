@@ -58,7 +58,7 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
         onClick={onClick}
         className={cx(classes.link, { [classes.active]: active })}
       >
-        <Icon />
+        <Icon width={30} height={30} />
       </UnstyledButton>
     </Tooltip>
   );
@@ -72,12 +72,15 @@ export default function NavbarMinimal({ data }: { data: NavbarLinkProps[] }) {
       {...link}
       key={link.label}
       active={index === active}
-      onClick={() => {setActive(index);link.onClick?.()}}
+      onClick={() => {
+        setActive(index);
+        link.onClick?.();
+      }}
     />
   ));
 
   return (
-    <Navbar height={750} width={{ base: 80 }} p="md">
+    <Navbar height={"100vh"} width={{ base: 80 }} p="md">
       <Center>
         <DarkMode />
       </Center>
