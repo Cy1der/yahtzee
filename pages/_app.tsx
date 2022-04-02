@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
-import { AppProps } from "next/app";
+import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import NavBar from "../components/NavBar";
 import { Home2, Help } from "tabler-icons-react";
@@ -12,8 +12,10 @@ import {
   ColorSchemeProvider,
 } from "@mantine/core";
 import Head from "next/head";
+import { AppShell } from "@mantine/core";
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
+  const { Component, pageProps } = props;
   const [colorScheme, setColorScheme] = useState<ColorScheme>(
     props.colorScheme
   );
@@ -43,27 +45,35 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           withGlobalStyles
           withNormalizeCSS
         >
-          <div className="fixed top-0 left-0 h-screen flex flex-col">
-            <NavBar
-              data={[
-                { icon: Home2, label: "Home", onClick: () => Router.push("/") },
-                {
-                  icon: Help,
-                  label: "Help",
-                  onClick: () =>
-                    Router.push(
-                      "https://www.hasbro.com/common/instruct/Yahtzee.pdf"
-                    ),
-                },
-              ]}
-            />
-          </div>
+          <AppShell
+            navbar={
+              <NavBar
+                data={[
+                  {
+                    icon: Home2,
+                    label: "Home",
+                    onClick: () => Router.push("/"),
+                  },
+                  {
+                    icon: Help,
+                    label: "Help",
+                    onClick: () =>
+                      Router.push(
+                        "https://www.hasbro.com/common/instruct/Yahtzee.pdf"
+                      ),
+                  },
+                ]}
+              />
+            }
+          >
+            <Component {...pageProps} />
+          </AppShell>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
   );
 }
 
-App.getInitialProps = ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
+App.getInitialProps = async ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
   colorScheme: getCookie("mantine-color-scheme", ctx) || "light",
 });
