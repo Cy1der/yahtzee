@@ -19,6 +19,7 @@
     "cookies-next": "^2.0.4",
     "dayjs": "^1.11.0",
     "next": "12.1.2",
+    "ohmyfetch": "^0.4.15",
     "query-string": "^7.1.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
