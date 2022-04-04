@@ -1,12 +1,22 @@
 import Image from "next/image";
 
-export default function Dice({ number, className, onClick, held }: { number: number, className?: string, onClick?: () => any, held: boolean }) {
+export default function Dice({
+  number,
+  className,
+  onClick,
+  held,
+}: {
+  number: number;
+  className?: string;
+  onClick?: () => any;
+  held: boolean;
+}) {
   let pulse = "animate-pulse";
   return number === 0 ? (
     <div className={className}>
       <Image
         layout="raw"
-        className={`hover:scale-[1.1] ${held ? "" : pulse}`}
+        className={`hover:scale-[1.1] ${held ? "" : pulse} shadow-2xl`}
         src={"/dicefaces/1.png"}
         width={128}
         height={128}
@@ -20,7 +30,7 @@ export default function Dice({ number, className, onClick, held }: { number: num
     <div className={className}>
       <Image
         layout="raw"
-        className={`hover:scale-[1.1] ${held ? "" : pulse}`}
+        className={`hover:scale-[1.1] ${held ? "" : pulse} shadow-2xl`}
         src={`/dicefaces/${number}.png`}
         width={128}
         height={128}
@@ -34,7 +44,7 @@ export default function Dice({ number, className, onClick, held }: { number: num
     <div className={className}>
       <Image
         layout="raw"
-        className={`hover:scale-[1.1] ${held ? "" : pulse}`}
+        className={`hover:scale-[1.1] ${held ? "" : pulse} shadow-2xl`}
         src={"/dicefaces/1.png"}
         width={128}
         height={128}

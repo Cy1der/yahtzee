@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import Head from "next/head";
 import { AppShell } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -66,7 +67,9 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
               />
             }
           >
-            <Component {...pageProps} />
+            <NotificationsProvider>
+              <Component {...pageProps} />
+            </NotificationsProvider>
           </AppShell>
         </MantineProvider>
       </ColorSchemeProvider>
