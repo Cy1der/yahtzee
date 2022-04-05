@@ -42,7 +42,7 @@ export default function handler(
     let result = held;
 
     held.forEach((dice, index) => {
-      let diceRoll = Math.floor(Math.random() * 6) + 1;
+      let diceRoll = Math.floor(Math.random() * 2) + 1;
       if (dice === 0) result.splice(index, 1, diceRoll);
     });
 

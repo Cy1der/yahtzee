@@ -19,6 +19,7 @@ const Home: NextPage = () => {
   let [held2, setHeld2] = useState([true, true, true, true, true]); // FOR VISUALS
   let [total, setTotal] = useState(0);
   let [count, setCount] = useState(0);
+  let [claimed, setClaimed] = useState(false);
 
   let acesScore = {
     selected: false,
@@ -269,13 +270,22 @@ const Home: NextPage = () => {
                 score: upperScore >= 63 ? 35 : 0,
               });
 
-              if (yahtzee.selected && yahtzee.score !== 0) {
-                setTotal(total += 100);
+              if (
+                yahtzee.selected &&
+                (await $fetch(`/api/yahtzee?dice=${result.join("")}`).then(
+                  (res) => res.result
+                )) !== 0 &&
+                !claimed &&
+                yahtzee.score !== 0
+              ) {
+                setClaimed(true);
+                setTotal((total += 100));
                 showNotification({
                   title: "Bonus Yahtzee!",
-                  message: "You have been given 100 points for getting another Yahtzee!",
+                  message:
+                    "You have been given 100 points for getting another Yahtzee!",
                   color: "indigo",
-                  radius: "lg"
+                  radius: "lg",
                 });
               }
             }}
@@ -311,6 +321,7 @@ const Home: NextPage = () => {
                         score: aces.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
@@ -318,13 +329,14 @@ const Home: NextPage = () => {
                       setUpperScore((upperScore += aces.score));
                       setTotal((total += aces.score));
 
-                      if (upperScore >= 63  && !bonus.selected) showNotification({
-                        title: "Bonus available!",
-                        message: "Claim the bonus and earn 35 points!",
-                        autoClose: false,
-                        radius: "lg",
-                        color: "blue",
-                      });
+                      if (upperScore >= 63 && !bonus.selected)
+                        showNotification({
+                          title: "Bonus available!",
+                          message: "Claim the bonus and earn 35 points!",
+                          autoClose: false,
+                          radius: "lg",
+                          color: "blue",
+                        });
 
                       if (count === 13)
                         showNotification({
@@ -356,18 +368,20 @@ const Home: NextPage = () => {
                         score: twos.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setCount((count += 1));
                       setUpperScore((upperScore += twos.score));
                       setTotal((total += twos.score));
-                      if (upperScore >= 63  && !bonus.selected) showNotification({
-                        title: "Bonus available!",
-                        message: "Claim the bonus and earn 35 points!",
-                        autoClose: false,
-                        radius: "lg",
-                        color: "blue",
-                      });
+                      if (upperScore >= 63 && !bonus.selected)
+                        showNotification({
+                          title: "Bonus available!",
+                          message: "Claim the bonus and earn 35 points!",
+                          autoClose: false,
+                          radius: "lg",
+                          color: "blue",
+                        });
                       if (count === 13)
                         showNotification({
                           title: "Congratulations! 🎉",
@@ -398,19 +412,21 @@ const Home: NextPage = () => {
                         score: threes.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setUpperScore((upperScore += threes.score));
                       setTotal((total += threes.score));
-                      if (upperScore >= 63  && !bonus.selected) showNotification({
-                        title: "Bonus available!",
-                        message: "Claim the bonus and earn 35 points!",
-                        autoClose: false,
-                        radius: "lg",
-                        color: "blue",
-                      });
+                      if (upperScore >= 63 && !bonus.selected)
+                        showNotification({
+                          title: "Bonus available!",
+                          message: "Claim the bonus and earn 35 points!",
+                          autoClose: false,
+                          radius: "lg",
+                          color: "blue",
+                        });
                       if (count === 13)
                         showNotification({
                           title: "Congratulations! 🎉",
@@ -441,19 +457,21 @@ const Home: NextPage = () => {
                         score: fours.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setUpperScore((upperScore += fours.score));
                       setTotal((total += fours.score));
-                      if (upperScore >= 63  && !bonus.selected) showNotification({
-                        title: "Bonus available!",
-                        message: "Claim the bonus and earn 35 points!",
-                        autoClose: false,
-                        radius: "lg",
-                        color: "blue",
-                      });
+                      if (upperScore >= 63 && !bonus.selected)
+                        showNotification({
+                          title: "Bonus available!",
+                          message: "Claim the bonus and earn 35 points!",
+                          autoClose: false,
+                          radius: "lg",
+                          color: "blue",
+                        });
                       if (count === 13)
                         showNotification({
                           title: "Congratulations! 🎉",
@@ -484,18 +502,20 @@ const Home: NextPage = () => {
                         score: fives.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setUpperScore((upperScore += fives.score));
-                      if (upperScore >= 63  && !bonus.selected) showNotification({
-                        title: "Bonus available!",
-                        message: "Claim the bonus and earn 35 points!",
-                        autoClose: false,
-                        radius: "lg",
-                        color: "blue",
-                      });
+                      if (upperScore >= 63 && !bonus.selected)
+                        showNotification({
+                          title: "Bonus available!",
+                          message: "Claim the bonus and earn 35 points!",
+                          autoClose: false,
+                          radius: "lg",
+                          color: "blue",
+                        });
                       setTotal((total += fives.score));
                       if (count === 13)
                         showNotification({
@@ -527,18 +547,20 @@ const Home: NextPage = () => {
                         score: sixes.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setUpperScore((upperScore += sixes.score));
-                      if (upperScore >= 63  && !bonus.selected) showNotification({
-                        title: "Bonus available!",
-                        message: "Claim the bonus and earn 35 points!",
-                        autoClose: false,
-                        radius: "lg",
-                        color: "blue",
-                      });
+                      if (upperScore >= 63 && !bonus.selected)
+                        showNotification({
+                          title: "Bonus available!",
+                          message: "Claim the bonus and earn 35 points!",
+                          autoClose: false,
+                          radius: "lg",
+                          color: "blue",
+                        });
                       setTotal((total += sixes.score));
                       if (count === 13)
                         showNotification({
@@ -558,25 +580,25 @@ const Home: NextPage = () => {
                 <td className="px-3 py-2">{sixes.score}</td>
               </tr>
               <tr>
-              <td className="px-3 py-2">
-                <Button
-                  className="bg-blue-600 hover:bg-blue-500"
-                  radius="md"
-                  size="sm"
-                  disabled={bonus.selected || turn === 3 || upperScore < 63}
-                  onClick={() => {
-                    setBonus({
-                      selected: true,
-                      score: bonus.score,
-                    });
-                    setTotal((total += bonus.score));
-                  }}
-                >
-                  {upperScore >= 63 ? "Bonus" : `${upperScore}/63`}
-                </Button>
-              </td>
-              <td className="px-3 py-2">Bonus</td>
-              <td className="px-3 py-2">{bonus.score}</td>
+                <td className="px-3 py-2">
+                  <Button
+                    className="bg-blue-600 hover:bg-blue-500"
+                    radius="md"
+                    size="sm"
+                    disabled={bonus.selected || turn === 3 || upperScore < 63}
+                    onClick={() => {
+                      setBonus({
+                        selected: true,
+                        score: bonus.score,
+                      });
+                      setTotal((total += bonus.score));
+                    }}
+                  >
+                    {upperScore >= 63 ? "Bonus" : `${upperScore}/63`}
+                  </Button>
+                </td>
+                <td className="px-3 py-2">Bonus</td>
+                <td className="px-3 py-2">{bonus.score}</td>
               </tr>
               <tr>
                 <td className="px-3 py-2">
@@ -591,6 +613,7 @@ const Home: NextPage = () => {
                         score: threeOfAKind.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
@@ -627,6 +650,7 @@ const Home: NextPage = () => {
                         score: fourOfAKind.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
@@ -663,6 +687,7 @@ const Home: NextPage = () => {
                         score: fullHouse.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
@@ -699,6 +724,7 @@ const Home: NextPage = () => {
                         score: smallStraight.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
@@ -735,6 +761,7 @@ const Home: NextPage = () => {
                         score: largeStraight.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
@@ -771,6 +798,7 @@ const Home: NextPage = () => {
                         score: yahtzee.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
@@ -807,6 +835,7 @@ const Home: NextPage = () => {
                         score: chance.score,
                       });
                       setTurn(3);
+                      setClaimed(false);
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
