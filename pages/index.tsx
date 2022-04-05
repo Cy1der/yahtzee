@@ -12,6 +12,7 @@ const Home: NextPage = () => {
   let turnNum = 3;
   let heldArray = [0, 0, 0, 0, 0];
   let diceArray = [0, 0, 0, 0, 0];
+  let [upperScore, setUpperScore] = useState(0);
   let [dice, setDice] = useState(diceArray);
   let [held, setHeld] = useState(heldArray);
   let [turn, setTurn] = useState(turnNum);
@@ -71,6 +72,10 @@ const Home: NextPage = () => {
     selected: false,
     score: 0,
   };
+  let bonusScore = {
+    selected: false,
+    score: 0,
+  };
 
   let [aces, setAces] = useState(acesScore);
   let [twos, setTwos] = useState(twosScore);
@@ -85,6 +90,7 @@ const Home: NextPage = () => {
   let [largeStraight, setLargeStraight] = useState(largeStraightScore);
   let [yahtzee, setYahtzee] = useState(yahtzeeScore);
   let [chance, setChance] = useState(chanceScore);
+  let [bonus, setBonus] = useState(bonusScore);
 
   return (
     <>
@@ -258,6 +264,12 @@ const Home: NextPage = () => {
                       (res) => res.result
                     ),
               });
+              setBonus({
+                selected: bonus.selected,
+                score: upperScore >= 63 ? 35 : 0,
+              });
+              console.log(bonus)
+              console.log(upperScore)
             }}
           >
             Roll [Turns left: {turn}]
@@ -295,6 +307,7 @@ const Home: NextPage = () => {
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
+                      setUpperScore((upperScore += aces.score));
                       setTotal((total += aces.score));
 
                       if (count === 13)
@@ -330,6 +343,7 @@ const Home: NextPage = () => {
                       setHeld([0, 0, 0, 0, 0]);
                       setHeld2([true, true, true, true, true]);
                       setCount((count += 1));
+                      setUpperScore((upperScore += twos.score));
                       setTotal((total += twos.score));
                       if (count === 13)
                         showNotification({
@@ -365,6 +379,7 @@ const Home: NextPage = () => {
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
+                      setUpperScore((upperScore += threes.score));
                       setTotal((total += threes.score));
 
                       if (count === 13)
@@ -401,6 +416,7 @@ const Home: NextPage = () => {
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
+                      setUpperScore((upperScore += fours.score));
                       setTotal((total += fours.score));
 
                       if (count === 13)
@@ -437,6 +453,7 @@ const Home: NextPage = () => {
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
+                      setUpperScore((upperScore += fives.score));
 
                       setTotal((total += fives.score));
                       if (count === 13)
@@ -473,6 +490,7 @@ const Home: NextPage = () => {
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
+                      setUpperScore((upperScore += sixes.score));
 
                       setTotal((total += sixes.score));
                       if (count === 13)
@@ -491,6 +509,27 @@ const Home: NextPage = () => {
                 </td>
                 <td className="px-3 py-2">Sixes</td>
                 <td className="px-3 py-2">{sixes.score}</td>
+              </tr>
+              <tr>
+              <td className="px-3 py-2">
+                <Button
+                  className="bg-blue-600 hover:bg-blue-500"
+                  radius="md"
+                  size="sm"
+                  disabled={bonus.selected || turn === 3 || upperScore < 63}
+                  onClick={() => {
+                    setBonus({
+                      selected: true,
+                      score: bonus.score,
+                    });
+                    setTotal((total += bonus.score));
+                  }}
+                >
+                  {upperScore >= 63 ? "Bonus" : `${upperScore}/63`}
+                </Button>
+              </td>
+              <td className="px-3 py-2">Bonus</td>
+              <td className="px-3 py-2">{bonus.score}</td>
               </tr>
               <tr>
                 <td className="px-3 py-2">
