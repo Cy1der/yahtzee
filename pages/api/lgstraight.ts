@@ -28,7 +28,7 @@ export default function handler(
     let result = 0;
     let straightResult = straight(validate.dice);
 
-    if (straightResult >= 5) result = 30;
+    if (straightResult >= 5) result = 40;
 
     return res.status(validate.status).json({ result });
   }
