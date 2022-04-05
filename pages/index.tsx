@@ -268,8 +268,16 @@ const Home: NextPage = () => {
                 selected: bonus.selected,
                 score: upperScore >= 63 ? 35 : 0,
               });
-              console.log(bonus)
-              console.log(upperScore)
+
+              if (yahtzee.selected && yahtzee.score !== 0) {
+                setTotal(total += 100);
+                showNotification({
+                  title: "Bonus Yahtzee!",
+                  message: "You have been given 100 points for getting another Yahtzee!",
+                  color: "indigo",
+                  radius: "lg"
+                });
+              }
             }}
           >
             Roll [Turns left: {turn}]
@@ -310,6 +318,14 @@ const Home: NextPage = () => {
                       setUpperScore((upperScore += aces.score));
                       setTotal((total += aces.score));
 
+                      if (upperScore >= 63  && !bonus.selected) showNotification({
+                        title: "Bonus available!",
+                        message: "Claim the bonus and earn 35 points!",
+                        autoClose: false,
+                        radius: "lg",
+                        color: "blue",
+                      });
+
                       if (count === 13)
                         showNotification({
                           title: "Congratulations! 🎉",
@@ -345,6 +361,13 @@ const Home: NextPage = () => {
                       setCount((count += 1));
                       setUpperScore((upperScore += twos.score));
                       setTotal((total += twos.score));
+                      if (upperScore >= 63  && !bonus.selected) showNotification({
+                        title: "Bonus available!",
+                        message: "Claim the bonus and earn 35 points!",
+                        autoClose: false,
+                        radius: "lg",
+                        color: "blue",
+                      });
                       if (count === 13)
                         showNotification({
                           title: "Congratulations! 🎉",
@@ -381,7 +404,13 @@ const Home: NextPage = () => {
                       setCount((count += 1));
                       setUpperScore((upperScore += threes.score));
                       setTotal((total += threes.score));
-
+                      if (upperScore >= 63  && !bonus.selected) showNotification({
+                        title: "Bonus available!",
+                        message: "Claim the bonus and earn 35 points!",
+                        autoClose: false,
+                        radius: "lg",
+                        color: "blue",
+                      });
                       if (count === 13)
                         showNotification({
                           title: "Congratulations! 🎉",
@@ -418,7 +447,13 @@ const Home: NextPage = () => {
                       setCount((count += 1));
                       setUpperScore((upperScore += fours.score));
                       setTotal((total += fours.score));
-
+                      if (upperScore >= 63  && !bonus.selected) showNotification({
+                        title: "Bonus available!",
+                        message: "Claim the bonus and earn 35 points!",
+                        autoClose: false,
+                        radius: "lg",
+                        color: "blue",
+                      });
                       if (count === 13)
                         showNotification({
                           title: "Congratulations! 🎉",
@@ -454,7 +489,13 @@ const Home: NextPage = () => {
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setUpperScore((upperScore += fives.score));
-
+                      if (upperScore >= 63  && !bonus.selected) showNotification({
+                        title: "Bonus available!",
+                        message: "Claim the bonus and earn 35 points!",
+                        autoClose: false,
+                        radius: "lg",
+                        color: "blue",
+                      });
                       setTotal((total += fives.score));
                       if (count === 13)
                         showNotification({
@@ -491,7 +532,13 @@ const Home: NextPage = () => {
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setUpperScore((upperScore += sixes.score));
-
+                      if (upperScore >= 63  && !bonus.selected) showNotification({
+                        title: "Bonus available!",
+                        message: "Claim the bonus and earn 35 points!",
+                        autoClose: false,
+                        radius: "lg",
+                        color: "blue",
+                      });
                       setTotal((total += sixes.score));
                       if (count === 13)
                         showNotification({
