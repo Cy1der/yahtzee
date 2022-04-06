@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type SavesAces {
+  score    Int
+  selected Boolean
+}
+
+type SavesBonus {
+  score    Int
+  selected Boolean
+}
+
+type SavesChance {
+  score    Int
+  selected Boolean
+}
+
+type SavesFives {
+  score    Int
+  selected Boolean
+}
+
+type SavesFourOfAKind {
+  score    Int
+  selected Boolean
+}
+
+type SavesFours {
+  score    Int
+  selected Boolean
+}
+
+type SavesFullHouse {
+  score    Int
+  selected Boolean
+}
+
+type SavesLargeStraight {
+  score    Int
+  selected Boolean
+}
+
+type SavesSixes {
+  score    Int
+  selected Boolean
+}
+
+type SavesSmallStraight {
+  score    Int
+  selected Boolean
+}
+
+type SavesThreeOfAKind {
+  score    Int
+  selected Boolean
+}
+
+type SavesThrees {
+  score    Int
+  selected Boolean
+}
+
+type SavesTwos {
+  score    Int
+  selected Boolean
+}
+
+type SavesYahtzee {
+  score    Int
+  selected Boolean
+}
+
+model saves {
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId
+  aces          SavesAces
+  bonus         SavesBonus
+  chance        SavesChance
+  claimed       Boolean
+  count         Int
+  dice          Int[]
+  fives         SavesFives
+  fourOfAKind   SavesFourOfAKind
+  fours         SavesFours
+  fullHouse     SavesFullHouse
+  held          Int[]
+  heldVisuals   Boolean[]
+  largeStraight SavesLargeStraight
+  sixes         SavesSixes
+  smallStraight SavesSmallStraight
+  threeOfAKind  SavesThreeOfAKind
+  threes        SavesThrees
+  total         Int
+  turn          Int
+  twos          SavesTwos
+  upperScore    Int
+  yahtzee       SavesYahtzee
+}

@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { useState } from "react";
 import Dice from "../components/Dice";
 import { Button } from "@mantine/core";
@@ -6,8 +5,9 @@ import { $fetch } from "ohmyfetch";
 import number from "../functions/logic/number";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
+import type { NextPage } from "next";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
   const router = useRouter();
   let turnNum = 3;
   let heldArray = [0, 0, 0, 0, 0];
@@ -177,7 +177,7 @@ const Home: NextPage = () => {
         <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
           <Button
             className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
-            radius="sm"
+            radius="lg"
             size="xl"
             disabled={turn === 0}
             onClick={async () => {
@@ -293,6 +293,17 @@ const Home: NextPage = () => {
             Roll [Turns left: {turn}]
           </Button>
         </div>
+        {/* <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
+          <Button
+            className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
+            radius="lg"
+            size="xl"
+            disabled={!isConnected}
+            onClick={() => {console.log("hello")}}
+          >
+            Save Game
+          </Button>
+        </div> */}
         <div className="hidden minimum:flex minimum:justify-center pt-10 pb-6">
           <p className="px-6 py-4 text-white bg-blue-600 shadow-2xl rounded-2xl">
             Score: {total}
