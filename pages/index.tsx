@@ -6,7 +6,7 @@ import number from "../functions/logic/number";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
-import { AlertTriangle, Mail } from "tabler-icons-react";
+import { AlertTriangle, Mail, Search } from "tabler-icons-react";
 
 const Home: NextPage = (props) => {
   const useStyles = createStyles((theme) => ({
@@ -39,6 +39,11 @@ const Home: NextPage = (props) => {
 
   let [emailFieldText, setEmailFieldText] = useState("");
   let [emailFieldError, setEmailFieldError] = useState(false);
+
+  let [idText, setIdText] = useState("");
+  let [idError, setIdError] = useState(false);
+
+  let [idList, setIdList] = useState("");
 
   let acesScore = {
     selected: false,
@@ -310,98 +315,6 @@ const Home: NextPage = (props) => {
             }}
           >
             Roll [Turns left: {turn}]
-          </Button>
-        </div>
-        <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
-          <TextInput
-            label="Email"
-            type="email"
-            classNames={emailFieldError ? { input: classes.invalid } : {}}
-            value={emailFieldText}
-            rightSection={
-              emailFieldError ? (
-                <AlertTriangle size={16} className={classes.icon} />
-              ) : (
-                <Mail size={16} />
-              )
-            }
-            error={emailFieldError ? "Invalid Email" : ""}
-            onChange={(event) => {
-              setEmailFieldText(event.currentTarget.value);
-              let emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-              if (
-                !emailValidate.test(event.currentTarget.value) &&
-                event.currentTarget.value !== ""
-              )
-                setEmailFieldError(true);
-              else setEmailFieldError(false);
-            }}
-          />
-        </div>
-        <div className="hidden minimum:flex minimum:justify-center pb-2 py-5">
-          <Button
-            className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
-            radius="lg"
-            size="md"
-            onClick={async () => {
-              let saveData = {
-                dice: dice,
-                held: held,
-                heldVisuals: held2,
-                turn: turn,
-                total: total,
-                upperScore: upperScore,
-                count: count,
-                claimed: claimed,
-                aces: aces,
-                twos: twos,
-                threes: threes,
-                fours: fours,
-                fives: fives,
-                sixes: sixes,
-                threeOfAKind: threeOfAKind,
-                fourOfAKind: fourOfAKind,
-                fullHouse: fullHouse,
-                smallStraight: smallStraight,
-                largeStraight: largeStraight,
-                yahtzee: yahtzee,
-                chance: chance,
-                bonus: bonus,
-                email: emailFieldText,
-              };
-              let emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-
-              if (!emailValidate.test(saveData.email))
-                return showNotification({
-                  title: "Invalid Email",
-                  message: "Please enter a valid email.",
-                  color: "red",
-                  radius: "lg",
-                });
-
-              let saveID = await $fetch(
-                `/api/save${Object.entries(saveData)
-                  .map((x, i) => {
-                    return `${i === 0 ? "?" : "&"}${x[0]}=${
-                      typeof x[1] === "object" ? JSON.stringify(x[1]) : x[1]
-                    }`;
-                  })
-                  .join("")}`,
-                {
-                  method: "POST",
-                }
-              ).then((res) => res.result);
-
-              showNotification({
-                title: "Game Saved Successfully",
-                message: `Your game has been saved successfully. Your save ID is ${saveID}.`,
-                color: "green",
-                radius: "lg",
-                autoClose: false,
-              });
-            }}
-          >
-            Save Game
           </Button>
         </div>
         <div className="hidden minimum:flex minimum:justify-center pt-10 pb-6">
@@ -972,6 +885,226 @@ const Home: NextPage = (props) => {
               </tr>
             </tbody>
           </table>
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
+          <TextInput
+            label="Email"
+            type="email"
+            classNames={emailFieldError ? { input: classes.invalid } : {}}
+            value={emailFieldText}
+            rightSection={
+              emailFieldError ? (
+                <AlertTriangle size={16} className={classes.icon} />
+              ) : (
+                <Mail size={16} />
+              )
+            }
+            error={emailFieldError ? "Invalid Email" : ""}
+            onChange={(event) => {
+              setEmailFieldText(event.currentTarget.value.toLowerCase());
+              let emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+              if (
+                !emailValidate.test(event.currentTarget.value.toLowerCase()) &&
+                event.currentTarget.value !== ""
+              )
+                setEmailFieldError(true);
+              else setEmailFieldError(false);
+            }}
+          />
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-5">
+          <Button
+            className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
+            radius="lg"
+            size="md"
+            disabled={emailFieldError || emailFieldText === ""}
+            onClick={async () => {
+              let saveData = {
+                dice: dice,
+                held: held,
+                heldVisuals: held2,
+                turn: turn,
+                total: total,
+                upperScore: upperScore,
+                count: count,
+                claimed: claimed,
+                aces: aces,
+                twos: twos,
+                threes: threes,
+                fours: fours,
+                fives: fives,
+                sixes: sixes,
+                threeOfAKind: threeOfAKind,
+                fourOfAKind: fourOfAKind,
+                fullHouse: fullHouse,
+                smallStraight: smallStraight,
+                largeStraight: largeStraight,
+                yahtzee: yahtzee,
+                chance: chance,
+                bonus: bonus,
+                email: emailFieldText.toLowerCase(),
+              };
+              let emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+
+              if (!emailValidate.test(saveData.email))
+                return showNotification({
+                  title: "Invalid Email",
+                  message: "Please enter a valid email.",
+                  color: "red",
+                  radius: "lg",
+                });
+
+              let saveID = await $fetch(
+                `/api/save${Object.entries(saveData)
+                  .map((x, i) => {
+                    return `${i === 0 ? "?" : "&"}${x[0]}=${
+                      typeof x[1] === "object" ? JSON.stringify(x[1]) : x[1]
+                    }`;
+                  })
+                  .join("")}`,
+                {
+                  method: "POST",
+                }
+              ).then((res) => res.result);
+
+              showNotification({
+                title: "Game Saved Successfully",
+                message: `Your game has been saved successfully. Your save ID is ${saveID}.`,
+                color: "green",
+                radius: "lg",
+                autoClose: false,
+              });
+            }}
+          >
+            Save Game
+          </Button>
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-5">
+          <Button
+            className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
+            radius="lg"
+            size="md"
+            disabled={emailFieldError || emailFieldText === ""}
+            onClick={async () => {
+              let emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+
+              if (!emailValidate.test(emailFieldText.toLowerCase()))
+                return showNotification({
+                  title: "Invalid Email",
+                  message: "Please enter a valid email.",
+                  color: "red",
+                  radius: "lg",
+                });
+
+              let idList = await $fetch(
+                `/api/saved/searchbyemail?email=${emailFieldText.toLowerCase()}`,
+                {
+                  method: "GET",
+                }
+              ).then((res) => res.result);
+
+              if (idList.length === 0)
+                return showNotification({
+                  message: "No Game Found :(",
+                  color: "red",
+                  radius: "lg",
+                  autoClose: false,
+                });
+
+              let idListFiltered: string[] = [];
+
+              idList.forEach((id: any) => idListFiltered.push(id.id));
+
+              setIdList(
+                `Found ${idListFiltered.length} entries\n\n` +
+                  idListFiltered.join("\n")
+              );
+            }}
+          >
+            Search Games by Email
+          </Button>
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center p-2">
+          <pre>{idList.length === 0 ? "" : idList}</pre>
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-5">
+          <TextInput
+            label="ID"
+            classNames={idError ? { input: classes.invalid } : {}}
+            value={idText}
+            rightSection={
+              idError ? (
+                <AlertTriangle size={16} className={classes.icon} />
+              ) : (
+                <Search size={16} />
+              )
+            }
+            error={idError ? "Invalid ID" : ""}
+            onChange={(event) => {
+              setIdText(event.currentTarget.value);
+              if (
+                (event.currentTarget.value.length < 24 ||
+                  event.currentTarget.value.length > 24) &&
+                event.currentTarget.value !== ""
+              )
+                return setIdError(true);
+              else setIdError(false);
+            }}
+          />
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-5">
+          <Button
+            className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
+            radius="lg"
+            size="md"
+            disabled={idError || idText.length !== 24}
+            onClick={async () => {
+              let result = await $fetch(`/api/saved/searchbyid?id=${idText}`, {
+                method: "GET",
+              }).then((res) => res.result);
+
+              setIdError(false);
+
+              if (!result)
+                return showNotification({
+                  message: "No Game Found :(",
+                  color: "red",
+                  radius: "lg",
+                  autoClose: false,
+                });
+
+              setAces(result.aces);
+              setTwos(result.twos);
+              setThrees(result.threes);
+              setFours(result.fours);
+              setFives(result.fives);
+              setSixes(result.sixes);
+              setThreeOfAKind(result.threeOfAKind);
+              setFourOfAKind(result.fourOfAKind);
+              setFullHouse(result.fullHouse);
+              setSmallStraight(result.smallStraight);
+              setLargeStraight(result.largeStraight);
+              setYahtzee(result.yahtzee);
+              setChance(result.chance);
+              setBonus(result.bonus);
+              setDice(result.dice);
+              setHeld(result.held);
+              setHeld2(result.heldVisuals);
+              setTurn(result.turn);
+              setTotal(result.total);
+              setUpperScore(result.upperScore);
+              setCount(result.count);
+              setClaimed(result.claimed);
+
+              showNotification({
+                message: "Loaded Game Successfully!",
+                color: "green",
+                radius: "lg",
+              });
+            }}
+          >
+            Load Game
+          </Button>
         </div>
       </div>
     </>

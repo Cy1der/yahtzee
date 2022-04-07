@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { URL } from "url";
-import { parse } from "query-string";
 import { PrismaClient } from "@prisma/client";
 
 const prisma: PrismaClient = new PrismaClient();
