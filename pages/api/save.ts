@@ -14,12 +14,14 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const url = new URL(req.url ?? "/", `http://${req.headers.host}`);
-  const paramsObject = Object.fromEntries(new URLSearchParams(url.search.slice(1)));
+  const paramsObject = Object.fromEntries(
+    new URLSearchParams(url.search.slice(1))
+  );
   let saveData: any = {};
 
   Object.entries(paramsObject).forEach(([key, value]) => {
-    if (key === "email") return saveData[key] = value;
-    return saveData[key] = JSON.parse(value);
+    if (key === "email") return (saveData[key] = value);
+    return (saveData[key] = JSON.parse(value));
   });
 
   let missing = {
@@ -49,9 +51,9 @@ export default async function handler(
     "count",
     "claimed",
     "bonus",
-    "email"
+    "email",
   ];
-  
+
   requiredParams.forEach((param) => {
     if (!paramsObject[param]) return (missing.name = param);
   });
@@ -60,11 +62,13 @@ export default async function handler(
     return res.status(400).json({
       result: `Error: missing/empty ${missing.name} parameter`,
     });
-    
-  let result = await prismaDB(saveData).catch((e) => error = e).finally(() => {
-    prisma.$disconnect();
-  });
-    
+
+  let result = await prismaDB(saveData)
+    .catch((e) => (error = e))
+    .finally(() => {
+      prisma.$disconnect();
+    });
+
   if (error) return res.status(500).json({ result: error });
 
   return res.status(200).json({ result });
@@ -73,7 +77,7 @@ export default async function handler(
 async function prismaDB(saveData: any): Promise<string> {
   await prisma.$connect();
   let newData = await prisma.saves.create({
-    data: saveData
+    data: saveData,
   });
   return newData.id;
 }

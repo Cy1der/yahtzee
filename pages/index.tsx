@@ -1,14 +1,29 @@
 import { useState } from "react";
 import Dice from "../components/Dice";
-import { Button } from "@mantine/core";
+import { Button, TextInput, createStyles } from "@mantine/core";
 import { $fetch } from "ohmyfetch";
 import number from "../functions/logic/number";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
-import EmailTextField from "../components/EmailTextField";
+import { AlertTriangle, Mail } from "tabler-icons-react";
 
 const Home: NextPage = (props) => {
+  const useStyles = createStyles((theme) => ({
+    invalid: {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.fn.rgba(theme.colors.red[8], 0.15)
+          : theme.colors.red[0],
+    },
+
+    icon: {
+      color: theme.colors.red[theme.colorScheme === "dark" ? 7 : 6],
+    },
+  }));
+
+  const { classes } = useStyles();
+
   const router = useRouter();
   let turnNum = 3;
   let heldArray = [0, 0, 0, 0, 0];
@@ -21,6 +36,9 @@ const Home: NextPage = (props) => {
   let [total, setTotal] = useState(0);
   let [count, setCount] = useState(0);
   let [claimed, setClaimed] = useState(false);
+
+  let [emailFieldText, setEmailFieldText] = useState("");
+  let [emailFieldError, setEmailFieldError] = useState(false);
 
   let acesScore = {
     selected: false,
@@ -295,9 +313,32 @@ const Home: NextPage = (props) => {
           </Button>
         </div>
         <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
-          <EmailTextField />
+          <TextInput
+            label="Email"
+            type="email"
+            classNames={emailFieldError ? { input: classes.invalid } : {}}
+            value={emailFieldText}
+            rightSection={
+              emailFieldError ? (
+                <AlertTriangle size={16} className={classes.icon} />
+              ) : (
+                <Mail size={16} />
+              )
+            }
+            error={emailFieldError ? "Invalid Email" : ""}
+            onChange={(event) => {
+              setEmailFieldText(event.currentTarget.value);
+              let emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+              if (
+                !emailValidate.test(event.currentTarget.value) &&
+                event.currentTarget.value !== ""
+              )
+                setEmailFieldError(true);
+              else setEmailFieldError(false);
+            }}
+          />
         </div>
-        <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-5">
           <Button
             className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
             radius="lg"
@@ -326,30 +367,34 @@ const Home: NextPage = (props) => {
                 yahtzee: yahtzee,
                 chance: chance,
                 bonus: bonus,
-                email: "mrvenomousgd@gmail.com"
+                email: emailFieldText,
               };
-              let emailValidate = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm;
+              let emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-              if (!emailValidate.test(saveData.email)) return showNotification({
-                title: "Invalid Email",
-                message:
-                  "Please enter a valid email.",
-                color: "red",
-                radius: "lg",
-              });
+              if (!emailValidate.test(saveData.email))
+                return showNotification({
+                  title: "Invalid Email",
+                  message: "Please enter a valid email.",
+                  color: "red",
+                  radius: "lg",
+                });
 
-              let saveID = await $fetch(`/api/save${Object.entries(saveData).map((x, i) => {
-                return `${i === 0 ? "?" : "&"}${x[0]}=${typeof x[1] === "object" ? JSON.stringify(x[1]) : x[1]}`
-              }).join("")}`, {
-                method: "POST",
-              }).then(
-                (res) => res.result
-              );
+              let saveID = await $fetch(
+                `/api/save${Object.entries(saveData)
+                  .map((x, i) => {
+                    return `${i === 0 ? "?" : "&"}${x[0]}=${
+                      typeof x[1] === "object" ? JSON.stringify(x[1]) : x[1]
+                    }`;
+                  })
+                  .join("")}`,
+                {
+                  method: "POST",
+                }
+              ).then((res) => res.result);
 
               showNotification({
                 title: "Game Saved Successfully",
-                message:
-                  `Your game has been saved successfully. Your save ID is ${saveID}.`,
+                message: `Your game has been saved successfully. Your save ID is ${saveID}.`,
                 color: "green",
                 radius: "lg",
                 autoClose: false,
