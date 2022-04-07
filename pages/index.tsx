@@ -6,6 +6,7 @@ import number from "../functions/logic/number";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
+import EmailTextField from "../components/EmailTextField";
 
 const Home: NextPage = (props) => {
   const router = useRouter();
@@ -293,17 +294,71 @@ const Home: NextPage = (props) => {
             Roll [Turns left: {turn}]
           </Button>
         </div>
-        {/* <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
+          <EmailTextField />
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-10">
           <Button
             className="bg-blue-600 hover:bg-blue-500 shadow-2xl"
             radius="lg"
-            size="xl"
-            disabled={!isConnected}
-            onClick={() => {console.log("hello")}}
+            size="md"
+            onClick={async () => {
+              let saveData = {
+                dice: dice,
+                held: held,
+                heldVisuals: held2,
+                turn: turn,
+                total: total,
+                upperScore: upperScore,
+                count: count,
+                claimed: claimed,
+                aces: aces,
+                twos: twos,
+                threes: threes,
+                fours: fours,
+                fives: fives,
+                sixes: sixes,
+                threeOfAKind: threeOfAKind,
+                fourOfAKind: fourOfAKind,
+                fullHouse: fullHouse,
+                smallStraight: smallStraight,
+                largeStraight: largeStraight,
+                yahtzee: yahtzee,
+                chance: chance,
+                bonus: bonus,
+                email: "mrvenomousgd@gmail.com"
+              };
+              let emailValidate = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm;
+
+              if (!emailValidate.test(saveData.email)) return showNotification({
+                title: "Invalid Email",
+                message:
+                  "Please enter a valid email.",
+                color: "red",
+                radius: "lg",
+              });
+
+              let saveID = await $fetch(`/api/save${Object.entries(saveData).map((x, i) => {
+                return `${i === 0 ? "?" : "&"}${x[0]}=${typeof x[1] === "object" ? JSON.stringify(x[1]) : x[1]}`
+              }).join("")}`, {
+                method: "POST",
+              }).then(
+                (res) => res.result
+              );
+
+              showNotification({
+                title: "Game Saved Successfully",
+                message:
+                  `Your game has been saved successfully. Your save ID is ${saveID}.`,
+                color: "green",
+                radius: "lg",
+                autoClose: false,
+              });
+            }}
           >
             Save Game
           </Button>
-        </div> */}
+        </div>
         <div className="hidden minimum:flex minimum:justify-center pt-10 pb-6">
           <p className="px-6 py-4 text-white bg-blue-600 shadow-2xl rounded-2xl">
             Score: {total}

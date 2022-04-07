@@ -85,6 +85,7 @@ model saves {
   claimed       Boolean
   count         Int
   dice          Int[]
+  email         String
   fives         SavesFives
   fourOfAKind   SavesFourOfAKind
   fours         SavesFours
