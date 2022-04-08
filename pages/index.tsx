@@ -36,14 +36,13 @@ const Home: NextPage = (props) => {
   let [total, setTotal] = useState(0);
   let [count, setCount] = useState(0);
   let [claimed, setClaimed] = useState(false);
-
   let [emailFieldText, setEmailFieldText] = useState("");
   let [emailFieldError, setEmailFieldError] = useState(false);
-
   let [idText, setIdText] = useState("");
   let [idError, setIdError] = useState(false);
-
   let [idList, setIdList] = useState("");
+  let [selectedFromID, setSelectedFromID] = useState(false);
+  let [selectedID, setSelectedID] = useState("");
 
   let acesScore = {
     selected: false,
@@ -339,7 +338,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={aces.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setAces({
                         selected: true,
                         score: aces.score,
@@ -362,7 +361,10 @@ const Home: NextPage = (props) => {
                           color: "blue",
                         });
 
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -371,6 +373,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -386,7 +389,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={twos.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setTwos({
                         selected: true,
                         score: twos.score,
@@ -406,7 +409,10 @@ const Home: NextPage = (props) => {
                           radius: "lg",
                           color: "blue",
                         });
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -415,6 +421,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -430,7 +437,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={threes.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setThrees({
                         selected: true,
                         score: threes.score,
@@ -451,7 +458,10 @@ const Home: NextPage = (props) => {
                           radius: "lg",
                           color: "blue",
                         });
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -460,6 +470,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -475,7 +486,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={fours.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setFours({
                         selected: true,
                         score: fours.score,
@@ -496,7 +507,10 @@ const Home: NextPage = (props) => {
                           radius: "lg",
                           color: "blue",
                         });
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -505,6 +519,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -520,7 +535,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={fives.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setFives({
                         selected: true,
                         score: fives.score,
@@ -541,7 +556,10 @@ const Home: NextPage = (props) => {
                           color: "blue",
                         });
                       setTotal((total += fives.score));
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -550,6 +568,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -565,7 +584,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={sixes.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setSixes({
                         selected: true,
                         score: sixes.score,
@@ -586,7 +605,10 @@ const Home: NextPage = (props) => {
                           color: "blue",
                         });
                       setTotal((total += sixes.score));
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -595,6 +617,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -610,7 +633,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={bonus.selected || turn === 3 || upperScore < 63}
-                    onClick={() => {
+                    onClick={async () => {
                       setBonus({
                         selected: true,
                         score: bonus.score,
@@ -631,7 +654,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={threeOfAKind.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setThreeOfAKind({
                         selected: true,
                         score: threeOfAKind.score,
@@ -642,9 +665,11 @@ const Home: NextPage = (props) => {
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
-
                       setTotal((total += threeOfAKind.score));
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -653,6 +678,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -668,7 +694,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={fourOfAKind.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setFourOfAKind({
                         selected: true,
                         score: fourOfAKind.score,
@@ -680,8 +706,10 @@ const Home: NextPage = (props) => {
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setTotal((total += fourOfAKind.score));
-
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -690,6 +718,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -705,7 +734,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={fullHouse.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setFullHouse({
                         selected: true,
                         score: fullHouse.score,
@@ -717,8 +746,10 @@ const Home: NextPage = (props) => {
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setTotal((total += fullHouse.score));
-
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -727,6 +758,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -742,7 +774,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={smallStraight.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setSmallStraight({
                         selected: true,
                         score: smallStraight.score,
@@ -754,8 +786,10 @@ const Home: NextPage = (props) => {
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setTotal((total += smallStraight.score));
-
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -764,6 +798,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -779,7 +814,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={largeStraight.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setLargeStraight({
                         selected: true,
                         score: largeStraight.score,
@@ -791,8 +826,10 @@ const Home: NextPage = (props) => {
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
                       setTotal((total += largeStraight.score));
-
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -801,6 +838,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -816,7 +854,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={yahtzee.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setYahtzee({
                         selected: true,
                         score: yahtzee.score,
@@ -827,9 +865,11 @@ const Home: NextPage = (props) => {
                       setHeld2([true, true, true, true, true]);
                       setDice([0, 0, 0, 0, 0]);
                       setCount((count += 1));
-
                       setTotal((total += yahtzee.score));
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -838,6 +878,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -853,7 +894,7 @@ const Home: NextPage = (props) => {
                     radius="md"
                     size="sm"
                     disabled={chance.selected || turn === 3}
-                    onClick={() => {
+                    onClick={async () => {
                       setChance({
                         selected: true,
                         score: chance.score,
@@ -866,7 +907,10 @@ const Home: NextPage = (props) => {
                       setCount((count += 1));
 
                       setTotal((total += chance.score));
-                      if (count === 13)
+                      if (count === 13) {
+                        if (selectedFromID) await $fetch(`/api/saved/deletesave?id=${selectedID}`)
+                        setSelectedFromID(false);
+                        setSelectedID("");
                         showNotification({
                           title: "Congratulations! 🎉",
                           message: `You finished the game with ${total} points! Press the X button to play again.`,
@@ -875,6 +919,7 @@ const Home: NextPage = (props) => {
                           color: "green",
                           onClose: () => router.reload(),
                         });
+                      }
                     }}
                   >
                     Select
@@ -1101,9 +1146,45 @@ const Home: NextPage = (props) => {
                 color: "green",
                 radius: "lg",
               });
+
+              setSelectedFromID(true);
+              setSelectedID(idText);
             }}
           >
             Load Game
+          </Button>
+        </div>
+        <div className="hidden minimum:flex minimum:justify-center pb-2 py-5">
+          <Button
+            className="bg-red-600 hover:bg-red-500 shadow-2xl"
+            radius="lg"
+            size="md"
+            disabled={idError || idText.length !== 24}
+            onClick={async () => {
+              let result = await $fetch(`/api/saved/deletesave?id=${idText}`, {
+                method: "GET",
+              }).then((res) => res.result);
+
+              setIdError(false);
+
+              console.log(result);
+
+              if (!result)
+                return showNotification({
+                  message: "No Game Found :(",
+                  color: "red",
+                  radius: "lg",
+                  autoClose: false,
+                });
+
+              showNotification({
+                message: "Deleted Game Successfully!",
+                color: "green",
+                radius: "lg",
+              });
+            }}
+          >
+            Delete Game
           </Button>
         </div>
       </div>
